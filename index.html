@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="description"
+        content="Find the best video games for you with our recommendation system. Discover new games to play and get personalized recommendations based on your preferences." />
+    <meta name="keywords"
+        content="video games, gaming, recommendations, personalized recommendations, game discovery, game selection, game genres" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Game Recommendation</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.4/jquery.min.js"
+        integrity="sha512-pumBsjNRGGqkPzKHndZMaAG+bir374sORyzM3uulLV14lN5LyykqNk8eEeUlUkB3U0M4FApyaHraT65ihJhDpQ=="
+        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+
+<body class="bg-gray-100">
+    <header class="bg-blue-600 p-4 text-center">
+        <h1 class="text-white text-3xl font-bold">Game Recommendation</h1>
+    </header>
+    <main class="container mx-auto p-6">
+        <section class="mb-8">
+            
+            <h2 class="text-xl font-semibold mb-4">Popular Games</h2>
+            <div class="flex flex-wrap gap-2" id="popular-game-list">
+                {% for i in popular_games %}
+                    <button class="bg-blue-300 text-white rounded-full px-4 py-2">{{ i }}</button>
+                {% endfor %}
+            </div>
+
+            <h2 class="text-xl font-semibold mb-4">Goals</h2>
+            <div class="flex flex-wrap gap-2" id="goal-list">
+                {% for i in game_goals %}
+                <button class="bg-blue-300 text-white rounded-full px-4 py-2">{{ i }}</button>
+                {% endfor %}
+            </div>
+
+            <div class="flex justify-center">
+                <button class="bg-green-500 text-white rounded-lg px-6 py-2 mt-4 mx-auto" id="submit">Generate
+                    Recommendations</button>
+            </div>
+        </section>
+    </main>
+    <footer class="bg-blue-600 p-4">
+        <p class="text-white text-center">Game Recommendation © 2023. All rights reserved.</p>
+    </footer>
+    <script>
+        function setup() {
+            $("#popular-game-list button").on("click", function () {
+                $(this).toggleClass("bg-blue-300 bg-blue-700");
+            });
+
+            $("#goal-list button").on("click", function () {
+                $(this).toggleClass("bg-blue-300 bg-blue-700");
+            });
+
+            $("#submit").on("click", function () {
+                let games = [];
+                $("#popular-game-list button.bg-blue-700").each(function () {
+                    games.push($(this).text());
+                });
+
+                let goals = [];
+                $("#goal-list button.bg-blue-700").each(function () {
+                    goals.push($(this).text());
+                });
+
+                if (games.length < 1) {
+                    alert("Please select at least 1 game");
+                    return;
+                }
+
+                if (goals.length < 1) {
+                    alert("Please select at least 1 goal");
+                    return;
+                }
+
+                // write a ajax function to send the data to the server
+                // the response will be a user id
+                // then redirect to the user page
+                $.ajax({
+                    url: "/create-user",
+                    method: "POST",
+                    contentType: 'application/json',
+                    data: JSON.stringify({ games: games, goals: goals }),
+                    success: function (res) {
+                        window.location.href = "/result/" + res;
+                    }
+                });
+            });
+        }
+
+        $(document).ready(function () {
+            setup();
+        });
+    </script>
+</body>
+
+</html>

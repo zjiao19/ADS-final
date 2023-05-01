@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="description"
+        content="Find the best video games for you with our recommendation system. Discover new games to play and get personalized recommendations based on your preferences." />
+    <meta name="keywords"
+        content="video games, gaming, recommendations, personalized recommendations, game discovery, game selection, game genres" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Game Recommendation</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.4/jquery.min.js"
+        integrity="sha512-pumBsjNRGGqkPzKHndZMaAG+bir374sORyzM3uulLV14lN5LyykqNk8eEeUlUkB3U0M4FApyaHraT65ihJhDpQ=="
+        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+
+<body class="bg-gray-100">
+    <header class="bg-blue-600 p-4 text-center">
+        <h1 class="text-white text-3xl font-bold">Game Recommendation</h1>
+    </header>
+    <main class="container mx-auto p-6">
+        <section class="flex">
+            <div class="w-3/4 pr-8">
+                <h2 class="text-xl font-semibold mb-4">Recommended Games</h2>
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+
+                    {% for i in range(0, length) %}
+                    <!-- Game Card -->
+                    <div class="bg-white rounded-lg p-4 shadow">
+                        <img src="{{ data[i].img }}" alt="Game image" class="w-full h-48 object-cover mb-4 rounded" />
+                        <h3 class="text-lg font-bold">{{data[i].title}}</h3>
+                        <p class="text-green-600 h-5">
+                            {{data[i].reason}}
+                        </p>
+                        <p class="text-gray-600 h-20">
+                            {{data[i].description}}
+                        </p>
+                        <div class="flex items-center">
+                            <span class="text-yellow-400 text-lg">
+                                {% for s in range(0, data[i].rating) %}
+                                ★
+                                {% endfor %}
+                                {% for s in range(data[i].rating , 5) %}
+                                ☆
+                                {% endfor %}
+                            </span>
+                            <span class="text-gray-500 ml-2">({{ data[i].rating }}.0 / 5)</span>
+                        </div>
+                    </div>
+                    <!-- End Game Card -->
+                    {% endfor %}
+
+                </div>
+            </div>
+            <aside class="w-1/4">
+                <h2 class="text-xl font-semibold mb-4">Filters</h2>
+                <div class="bg-white rounded-lg p-4 shadow">
+                    <label for="genres" class="block mb-2">Genres</label>
+                    <select id="genres" class="w-full border-gray-300 rounded mb-4">
+                        <option>
+                            Action
+                        </option>
+                        <option>
+                            Adventure
+                        </option>
+                        <option>
+                            RPG
+                        </option>
+                        <option>
+                            Strategy
+                        </option>
+                        <option>
+                            Puzzle
+                        </option>
+                    </select>
+                    <label for="platforms" class="block mb-2">Platforms</label>
+                    <select id="platforms" class="w-full border-gray-300 rounded mb-4">
+                        <option>
+                            PC
+                        </option>
+                        <option>
+                            PlayStation
+                        </option>
+                        <option>
+                            Xbox
+                        </option>
+                        <option>
+                            Nintendo Switch
+                        </option>
+                        <option>
+                            Mobile
+                        </option>
+                    </select>
+                    <label for="rating" class="block mb-2">Rating</label>
+                    <select id="rating" class="w-full border-gray-300 rounded mb-4">
+                        <option>
+                            1+
+                        </option>
+                        <option>
+                            2+
+                        </option>
+                        <option>
+                            3+
+                        </option>
+                        <option>
+                            4+
+                        </option>
+                        <option>
+                            5
+                        </option>
+                    </select>
+                    <label for="price" class="block mb-2">Price</label>
+                    <select id="price" class="w-full border-gray-300 rounded mb-4">
+                        <option>
+                            Free
+                        </option>
+                        <option>
+                            Up to $10
+                        </option>
+                        <option>
+                            Up to $20
+                        </option>
+                        <option>
+                            Up to $50
+                        </option>
+                        <option>
+                            Up to $100
+                        </option>
+                    </select>
+                    <button class="bg-green-500 text-white w-full rounded-full px-6 py-2">Apply Filters</button>
+                </div>
+            </aside>
+        </section>
+    </main>
+    <footer class="bg-blue-600 p-4">
+        <p class="text-white text-center">Game Recommendation © 2023. All rights reserved.</p>
+    </footer>
+</body>
+
+</html>
