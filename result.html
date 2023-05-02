@@ -25,27 +25,29 @@
                 <h2 class="text-xl font-semibold mb-4">Recommended Games</h2>
                 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
 
-                    {% for i in range(0, length) %}
+                    {% for d in data %}
                     <!-- Game Card -->
                     <div class="bg-white rounded-lg p-4 shadow">
-                        <img src="{{ data[i].img }}" alt="Game image" class="w-full h-48 object-cover mb-4 rounded" />
-                        <h3 class="text-lg font-bold">{{data[i].title}}</h3>
-                        <p class="text-green-600 h-5">
-                            {{data[i].reason}}
+                        <img src="{{ d.img }}" alt="Game image" class="w-full h-48 object-cover mb-4 rounded" />
+                        <a href="{{ d.url }}" target="_blank">
+                            <h3 class="text-lg font-bold">{{d.title}}</h3>
+                        </a>
+                        <p class="text-green-600">
+                            Recommended because you like {{d.reason}}.
                         </p>
-                        <p class="text-gray-600 h-20">
-                            {{data[i].description}}
-                        </p>
+                        <!-- <p class="text-gray-600 h-20">
+                            {{d.description}}
+                        </p> -->
                         <div class="flex items-center">
                             <span class="text-yellow-400 text-lg">
-                                {% for s in range(0, data[i].rating) %}
+                                {% for s in range(0, d.rating) %}
                                 ★
                                 {% endfor %}
-                                {% for s in range(data[i].rating , 5) %}
+                                {% for s in range(d.rating , 5) %}
                                 ☆
                                 {% endfor %}
                             </span>
-                            <span class="text-gray-500 ml-2">({{ data[i].rating }}.0 / 5)</span>
+                            <span class="text-gray-500 ml-2">({{ d.rating }}.0 / 5)</span>
                         </div>
                     </div>
                     <!-- End Game Card -->
