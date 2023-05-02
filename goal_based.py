@@ -120,7 +120,6 @@ game_goals = {
   'non-fiction': ['educational'],
   'kids': ['casual', 'educational'],
   'warfare': ['shooter', 'strategy'],
-  '4X (explore, expand, exploit, and exterminate)': ['4X'],
   'romance': ['visual novel', 'erotic']
 }
 

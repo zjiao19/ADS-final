@@ -60,18 +60,38 @@ def result(user_id):
         # user not found
         return redirect(url_for('index'))
     
+    arg_genre = request.args.get('genres')
+    arg_platform = request.args.get('platforms')
+    arg_rating = request.args.get('rating')
+    if arg_genre == "All":
+        arg_genre = None
+    if arg_platform == "All":
+        arg_platform = None
+    if arg_rating is not None:
+        arg_rating = int(arg_rating)
+
     agent = goal_based.Agent.all_agents[int(user_id)]
     recommendations = goal_based.get_recommendations(agent)
     data = []
     for r in recommendations:
+        if arg_genre and arg_genre not in r.game.features:
+            continue
+        if arg_platform and arg_platform not in r.game.platforms:
+            continue
+        if arg_rating and arg_rating > r.game.rating:
+            continue
+
         data.append({
             "title": r.game.name,
             "img": r.game.cover,
             "description": r.game.description,
             "reason": ", ".join(r.reasons),
             "rating": r.game.rating,
-            "url": r.game.url
+            "url": r.game.url,
         })
-    html = render_template('result.html', data=data)
+
+        if len(data) >= 50:
+            break
+    html = render_template('result.html', data=data, genres=sorted(goal_based.genres.values()), platforms=sorted(goal_based.platforms.values()), args=[arg_genre, arg_platform, arg_rating])
     response = make_response(html)
     return response
