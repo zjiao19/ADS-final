@@ -17,7 +17,9 @@
 
 <body class="bg-gray-100">
     <header class="bg-blue-600 p-4 text-center">
-        <h1 class="text-white text-3xl font-bold">Game Recommendation</h1>
+        <a href="/">
+            <h1 class="text-white text-3xl font-bold">Game Recommendation</h1>
+        </a>
     </header>
     <main class="container mx-auto p-6">
         <section class="flex">
@@ -25,29 +27,31 @@
                 <h2 class="text-xl font-semibold mb-4">Recommended Games</h2>
                 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
 
-                    {% for i in range(0, length) %}
+                    {% for d in data %}
                     <!-- Game Card -->
-                    <div class="bg-white rounded-lg p-4 shadow">
-                        <img src="{{ data[i].img }}" alt="Game image" class="w-full h-48 object-cover mb-4 rounded" />
-                        <h3 class="text-lg font-bold">{{data[i].title}}</h3>
-                        <p class="text-green-600 h-5">
-                            {{data[i].reason}}
-                        </p>
-                        <p class="text-gray-600 h-20">
-                            {{data[i].description}}
-                        </p>
-                        <div class="flex items-center">
-                            <span class="text-yellow-400 text-lg">
-                                {% for s in range(0, data[i].rating) %}
-                                ★
-                                {% endfor %}
-                                {% for s in range(data[i].rating , 5) %}
-                                ☆
-                                {% endfor %}
-                            </span>
-                            <span class="text-gray-500 ml-2">({{ data[i].rating }}.0 / 5)</span>
+                    <a href="{{ d.url }}" target="_blank">
+                        <div class="bg-white rounded-lg p-4 shadow">
+                            <img src="{{ d.img }}" alt="Game image" class="w-full h-48 object-cover mb-4 rounded" />
+                            <h3 class="text-lg font-bold">{{d.title}}</h3>
+                            <p class="text-green-600">
+                                Recommended because you like {{d.reason}}.
+                            </p>
+                            <!-- <p class="text-gray-600 h-20">
+                            {{d.description}}
+                        </p> -->
+                            <div class="flex items-center">
+                                <span class="text-yellow-400 text-lg">
+                                    {% for s in range(0, d.rating) %}
+                                    ★
+                                    {% endfor %}
+                                    {% for s in range(d.rating , 5) %}
+                                    ☆
+                                    {% endfor %}
+                                </span>
+                                <span class="text-gray-500 ml-2">({{ d.rating }}.0 / 5)</span>
+                            </div>
                         </div>
-                    </div>
+                    </a>
                     <!-- End Game Card -->
                     {% endfor %}
 
@@ -59,76 +63,42 @@
                     <label for="genres" class="block mb-2">Genres</label>
                     <select id="genres" class="w-full border-gray-300 rounded mb-4">
                         <option>
-                            Action
+                            All
                         </option>
-                        <option>
-                            Adventure
+                        {% for g in genres %}
+                        <option {% if args[0]==g %}selected{% endif %}>
+                            {{ g }}
                         </option>
-                        <option>
-                            RPG
-                        </option>
-                        <option>
-                            Strategy
-                        </option>
-                        <option>
-                            Puzzle
-                        </option>
+                        {% endfor %}
                     </select>
                     <label for="platforms" class="block mb-2">Platforms</label>
                     <select id="platforms" class="w-full border-gray-300 rounded mb-4">
                         <option>
-                            PC
+                            All
                         </option>
-                        <option>
-                            PlayStation
+                        {% for p in platforms %}
+                        <option {% if args[1]==p %}selected{% endif %}>
+                            {{ p }}
                         </option>
-                        <option>
-                            Xbox
-                        </option>
-                        <option>
-                            Nintendo Switch
-                        </option>
-                        <option>
-                            Mobile
-                        </option>
+                        {% endfor %}
                     </select>
                     <label for="rating" class="block mb-2">Rating</label>
                     <select id="rating" class="w-full border-gray-300 rounded mb-4">
-                        <option>
-                            1+
+                        <option value="2">
+                            All
                         </option>
-                        <option>
-                            2+
-                        </option>
-                        <option>
+                        <option value="3" {% if args[2]==3 %}selected{% endif %}>
                             3+
                         </option>
-                        <option>
+                        <option value="4" {% if args[2]==4 %}selected{% endif %}>
                             4+
                         </option>
-                        <option>
+                        <option value="5" {% if args[2]==5 %}selected{% endif %}>
                             5
                         </option>
                     </select>
-                    <label for="price" class="block mb-2">Price</label>
-                    <select id="price" class="w-full border-gray-300 rounded mb-4">
-                        <option>
-                            Free
-                        </option>
-                        <option>
-                            Up to $10
-                        </option>
-                        <option>
-                            Up to $20
-                        </option>
-                        <option>
-                            Up to $50
-                        </option>
-                        <option>
-                            Up to $100
-                        </option>
-                    </select>
-                    <button class="bg-green-500 text-white w-full rounded-full px-6 py-2">Apply Filters</button>
+                    <button class="bg-green-500 text-white w-full rounded-full px-6 py-2" id="apply-filters">Apply
+                        Filters</button>
                 </div>
             </aside>
         </section>
@@ -136,6 +106,29 @@
     <footer class="bg-blue-600 p-4">
         <p class="text-white text-center">Game Recommendation © 2023. All rights reserved.</p>
     </footer>
+    <script>
+        $(document).ready(function () {
+            // Get the "Apply Filters" button element
+            var applyFiltersBtn = $('#apply-filters');
+
+            // Add a click event listener to the button
+            applyFiltersBtn.click(function () {
+                // Get the current URL
+                var url = window.location.href.split('?')[0];
+
+                // Get the values of the input fields
+                var genresVal = $('#genres').val();
+                var platformsVal = $('#platforms').val();
+                var ratingVal = $('#rating').val();
+
+                // Add the input values as parameters to the URL
+                var newUrl = url + '?genres=' + genresVal + '&platforms=' + platformsVal + '&rating=' + ratingVal;
+
+                // Reload the page with the new URL
+                window.location.href = newUrl;
+            });
+        });
+    </script>
 </body>
 
 </html>
