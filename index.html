@@ -22,14 +22,14 @@
     <main class="container mx-auto p-6">
         <section class="mb-8">
             
-            <h2 class="text-xl font-semibold mb-4">Popular Games</h2>
+            <h2 class="text-xl font-semibold mb-4">Your Favorite Games</h2>
             <div class="flex flex-wrap gap-2" id="popular-game-list">
                 {% for i in popular_games %}
                     <button class="bg-blue-300 text-white rounded-full px-4 py-2">{{ i }}</button>
                 {% endfor %}
             </div>
 
-            <h2 class="text-xl font-semibold mb-4">Goals</h2>
+            <h2 class="text-xl font-semibold mb-4">You Goals</h2>
             <div class="flex flex-wrap gap-2" id="goal-list">
                 {% for i in game_goals %}
                 <button class="bg-blue-300 text-white rounded-full px-4 py-2">{{ i }}</button>
