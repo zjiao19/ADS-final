@@ -12,6 +12,7 @@ from nltk.stem.wordnet import WordNetLemmatizer
 from scipy import stats
 from sklearn.metrics.pairwise import linear_kernel # for cosine similarity
 from sklearn.feature_extraction.text import TfidfVectorizer
+import ssl
 
 def get_recommendations2(arr,prev_game):
     # preprocess the data
@@ -73,6 +74,16 @@ def nlp_recommend(df, text):
     dummy = (post.lower() for post in df['dummy'])
     df['dummy'] = [i for i in dummy]
     # Tokenize
+    try:
+        word_tokenize(df['dummy'][0])
+    except LookupError:
+        try:
+            _create_unverified_https_context = ssl._create_unverified_context
+        except AttributeError:
+            return []
+        else:
+            ssl._create_default_https_context = _create_unverified_https_context 
+            nltk.download("all")
     token_post = (word_tokenize(post) for post in df['dummy'])
     token_post = [i for i in token_post]   
     # Remove Punctuation
