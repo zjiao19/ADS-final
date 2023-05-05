@@ -36,4 +36,4 @@ The recommend page will give you the recommendation result:
 
 ## Literature Review
 
-The literature review is here [here](/Literature Review for Game Recommendation System.pdf) in which we reviewed papers related to our project.
+The literature review is here [here](/Literature%20Review%20for%20Game%20Recommendation%20System.pdf) in which we reviewed papers related to our project.
