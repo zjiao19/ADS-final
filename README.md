@@ -29,7 +29,7 @@ The recommend page will give you the recommendation result:
 ![](img/rec_page.png)
 
 When you select "League of Legends" as your previous favorite game and "play with friends" as your goal：
-![](img/home_1.png)
+![](img/home_2.png)
 
 The recommend page will give you the recommendation result:
 ![](img/rec_page_2.png)
