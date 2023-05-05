@@ -80,12 +80,18 @@ def result(user_id):
             continue
         if arg_rating and arg_rating > r.game.rating:
             continue
+        
+        reasons = r.reason_match_features()
+        reasonstr = ""
+        for reason, features in reasons.items():
+            reasonstr += f"You like {reason} and this game is {', '.join(features)}. "
+        
 
         data.append({
             "title": r.game.name,
             "img": r.game.cover,
             "description": r.game.description,
-            "reason": ", ".join(r.reasons),
+            "reason": reasonstr,
             "rating": r.game.rating,
             "url": r.game.url,
         })
