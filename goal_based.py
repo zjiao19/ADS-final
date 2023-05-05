@@ -128,10 +128,11 @@ game_goals = {
 class Agent:
     count = 0
     all_agents = []
-
-    def __init__(self, goals: List[str]):
+    
+    def __init__(self, goals: List[str],fav_game):
         self.goals = goals
         self.id = Agent.count
+        self.fav_game = fav_game
         Agent.count += 1
         Agent.all_agents.append(self)
 
@@ -188,4 +189,7 @@ def get_recommendations(agent: Agent):
         if game_score > 0:
             recommendations.append(Recommendation(game, game_score, list(set(reasons))))
     recommendations.sort(reverse=True)
+
+
+    print(recommendations[0].game.name,recommendations[0].game.description)
     return recommendations

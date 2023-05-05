@@ -3,7 +3,8 @@ from flask import Flask, render_template_string, request, make_response, redirec
 from flask import render_template
 import json
 import goal_based
-
+from goal_based import Game
+from cb_filter import get_recommendations2
 app = Flask(__name__, template_folder='.')
 
 popular_games = [
@@ -47,7 +48,7 @@ def create_user():
         goals = d["goals"]
         # print("fav_games", fav_games)
         # print("goals", goals)
-        agent = goal_based.Agent(goals)
+        agent = goal_based.Agent(goals,fav_games[0])
         return make_response(str(agent.id))
 
 
@@ -72,6 +73,19 @@ def result(user_id):
 
     agent = goal_based.Agent.all_agents[int(user_id)]
     recommendations = goal_based.get_recommendations(agent)
+    # select top 50 recomendation in the array
+    if len(recommendations) > 100:
+        recommendations = recommendations[:100]
+    # initiliaze a dictionary, key is the name of the game, value is recommendation object
+    first_rec = {r.game.name: r for r in recommendations}
+    first_rec_arr = [[r.game.name, r.game.description] for r in recommendations]
+    fav_game_obj = Game.all_games[agent.fav_game]
+    print(type(fav_game_obj))
+    first_rec_arr.append([agent.fav_game,fav_game_obj.description])
+    name_list = get_recommendations2(first_rec_arr,agent.fav_game)
+    # find all values corresponding to the name in the first_rec dictionary, they key is from name_list
+    recommendations = [first_rec[name] for name in name_list]
+    print(type(recommendations[0]))
     data = []
     for r in recommendations:
         if arg_genre and arg_genre not in r.game.features:
@@ -84,9 +98,9 @@ def result(user_id):
         reasons = r.reason_match_features()
         reasonstr = ""
         for reason, features in reasons.items():
-            reasonstr += f"You like {reason} and this game is {', '.join(features)}. "
-        
-
+            reasonstr += f"You like {reason} and this game is about {', '.join(features)}. "
+        resonstr2 = f"It is also similar to the game you like, {agent.fav_game}"
+        reasonstr += resonstr2
         data.append({
             "title": r.game.name,
             "img": r.game.cover,
