@@ -165,6 +165,13 @@ class Recommendation:
         if self.score != other.score:
             return self.score < other.score
         return self.game.rating < other.game.rating
+    
+    def reason_match_features(self):
+        result = {}
+        for reason in self.reasons:
+            intersection = set(self.game.features) & set(game_goals[reason])
+            result[reason] = list(intersection)
+        return result
 
 
 # %%
@@ -174,8 +181,7 @@ def get_recommendations(agent: Agent):
     for game in Game.all_games.values():
         game_score = 0
         reasons = []
-        # for my_f in my_features:
-        for my_f,my_gs in my_features.items():
+        for my_f, my_gs in my_features.items():
             if my_f in game.features:
                 game_score += len(my_gs)
                 reasons.extend(my_gs)
