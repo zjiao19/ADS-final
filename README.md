@@ -33,3 +33,7 @@ When you select "League of Legends" as your previous favorite game and "play wit
 
 The recommend page will give you the recommendation result:
 ![](img/rec_page_2.png)
+
+## Literature Review
+
+The literature review is here [here](img/rec_page_2.png) in which we reviewed papers related to our project.
