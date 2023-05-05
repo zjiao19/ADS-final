@@ -23,13 +23,13 @@ For content-based filtering, which implemented in `cb_filter.py`, we computed pa
 ## Example
 
 When you select "NBA 2K21" as your previous favorite game and select "building skills" and "role-playing" as your goals：
-!(img/home_1.png)
+![](img/home_1.png)
 
 The recommend page will give you the recommendation result:
-!(img/rec_page.png)
+![](img/rec_page.png)
 
 When you select "League of Legends" as your previous favorite game and "play with friends" as your goal：
-!(img/home_1.png)
+![](img/home_1.png)
 
 The recommend page will give you the recommendation result:
-!(img/rec_page_2.png)
+![](img/rec_page_2.png)
